@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Monika Singh — Full-Stack Developer & UI/UX Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0C1A28;
+    --bg-panel: #102436;
+    --line: #274357;
+    --line-soft: #1B3348;
+    --ink: #EAF2F7;
+    --muted: #93ABBE;
+    --muted-dim: #6E8497;
+    --accent: #57D6C6;
+    --accent-dim: #3B9D91;
+    --amber: #F0B858;
+    --radius: 3px;
+    --serif-display: "Space Grotesk", "Segoe UI", sans-serif;
+    --body-font: "Inter", "Segoe UI", sans-serif;
+    --mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  :root:not([data-theme="light"]) { color-scheme: dark; }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #0C1A28; --bg-panel: #102436; --ink: #EAF2F7; --muted: #93ABBE;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body-font);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  .bp-bg {
+    position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background-image:
+      linear-gradient(var(--line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size: 48px 48px;
+    opacity: .35;
+    mask-image: radial-gradient(ellipse 100% 60% at 50% 0%, black 40%, transparent 85%);
+  }
+
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 28px; }
+
+  /* ---------- Corner marks ---------- */
+  .frame-corner { position: fixed; width: 22px; height: 22px; border-color: var(--muted-dim); opacity: .5; z-index: 5; }
+  .frame-corner.tl { top: 14px; left: 14px; border-top: 1px solid; border-left: 1px solid; }
+  .frame-corner.tr { top: 14px; right: 14px; border-top: 1px solid; border-right: 1px solid; }
+  @media (max-width: 640px) { .frame-corner { display: none; } }
+
+  /* ---------- Header / nav ---------- */
+  header.top {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(12,26,40,.88);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  header.top .wrap { display: flex; align-items: center; justify-content: space-between; height: 56px; }
+  .brand { font-family: var(--mono); font-size: 13px; color: var(--muted); letter-spacing: .04em; }
+  .brand strong { color: var(--ink); font-weight: 500; }
+  nav.top-links { display: flex; gap: 22px; font-family: var(--mono); font-size: 12.5px; }
+  nav.top-links a { color: var(--muted); }
+  nav.top-links a:hover { color: var(--accent); }
+  @media (max-width: 600px) { nav.top-links { display: none; } }
+
+  /* ---------- Hero ---------- */
+  .hero { padding: 84px 0 56px; border-bottom: 1px solid var(--line); }
+  .eyebrow-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 12px; color: var(--accent);
+    border: 1px solid var(--line); padding: 4px 10px; border-radius: var(--radius);
+    margin-bottom: 22px;
+  }
+  .eyebrow-tag::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+  h1.name {
+    font-family: var(--serif-display); font-weight: 700;
+    font-size: clamp(2.4rem, 6vw, 3.6rem); line-height: 1.05; margin: 0 0 14px;
+    letter-spacing: -0.01em;
+  }
+  .role {
+    font-family: var(--serif-display); font-weight: 500; font-size: clamp(1.1rem, 2.6vw, 1.4rem);
+    color: var(--accent); margin: 0 0 22px;
+  }
+  .lede { max-width: 58ch; color: var(--muted); font-size: 1.03rem; margin: 0 0 34px; }
+
+  .contact-row { display: flex; flex-wrap: wrap; gap: 10px 14px; margin-bottom: 44px; }
+  .pill {
+    font-family: var(--mono); font-size: 13px; color: var(--ink);
+    border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 8px 14px; display: inline-flex; align-items: center; gap: 8px;
+    transition: border-color .15s ease, color .15s ease;
+  }
+  .pill:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+
+  .stat-strip { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .stat { padding: 18px 20px; border-right: 1px solid var(--line); }
+  .stat:last-child { border-right: none; }
+  .stat .num { font-family: var(--serif-display); font-weight: 700; font-size: 1.6rem; color: var(--ink); }
+  .stat .lbl { font-family: var(--mono); font-size: 11.5px; color: var(--muted-dim); margin-top: 2px; }
+  @media (max-width: 560px) { .stat-strip { grid-template-columns: 1fr; } .stat { border-right: none; border-bottom: 1px solid var(--line); } .stat:last-child { border-bottom: none; } }
+
+  /* ---------- Sections ---------- */
+  section { padding: 58px 0; border-bottom: 1px solid var(--line); }
+  section:last-of-type { border-bottom: none; }
+  .section-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 28px; }
+  .section-head .idx { font-family: var(--mono); font-size: 12px; color: var(--muted-dim); }
+  h2.section-title { font-family: var(--serif-display); font-weight: 600; font-size: 1.5rem; margin: 0; }
+
+  .about-text { max-width: 62ch; color: var(--muted); font-size: 1.02rem; }
+  .about-text strong { color: var(--ink); font-weight: 500; }
+
+  /* ---------- Skills ---------- */
+  .skill-group { margin-bottom: 20px; }
+  .skill-group .grp-label { font-family: var(--mono); font-size: 12px; color: var(--muted-dim); margin-bottom: 10px; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag { font-family: var(--mono); font-size: 12.5px; color: var(--ink); background: var(--bg-panel); border: 1px solid var(--line); padding: 6px 11px; border-radius: var(--radius); }
+
+  /* ---------- Projects ---------- */
+  .project { padding: 26px 0; border-top: 1px solid var(--line-soft); display: grid; grid-template-columns: 1fr; gap: 10px; }
+  .project:first-of-type { border-top: none; }
+  .project-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .project-title { font-family: var(--serif-display); font-weight: 600; font-size: 1.18rem; color: var(--ink); }
+  .project-link { font-family: var(--mono); font-size: 12.5px; white-space: nowrap; color: var(--accent); border: 1px solid var(--accent-dim); border-radius: var(--radius); padding: 5px 10px; }
+  .project-link:hover { background: rgba(87,214,198,.08); text-decoration: none; }
+  .project-desc { color: var(--muted); font-size: .98rem; max-width: 68ch; }
+  .project-meta { font-family: var(--mono); font-size: 11.5px; color: var(--muted-dim); }
+  .project .tag-row { margin-top: 4px; }
+
+  .more-projects { margin-top: 8px; }
+  .more-projects .project-title { font-size: 1.02rem; }
+
+  /* ---------- Timeline (experience) ---------- */
+  .timeline { position: relative; padding-left: 26px; }
+  .timeline::before { content: ""; position: absolute; left: 4px; top: 6px; bottom: 6px; width: 1px; background: var(--line); }
+  .tl-item { position: relative; padding-bottom: 30px; }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-item::before { content: ""; position: absolute; left: -26px; top: 4px; width: 9px; height: 9px; border-radius: 50%; background: var(--bg); border: 2px solid var(--accent); }
+  .tl-date { font-family: var(--mono); font-size: 12px; color: var(--muted-dim); margin-bottom: 4px; }
+  .tl-role { font-family: var(--serif-display); font-weight: 600; font-size: 1.05rem; color: var(--ink); }
+  .tl-org { color: var(--accent); font-size: .93rem; margin-bottom: 6px; }
+  .tl-desc { color: var(--muted); font-size: .95rem; max-width: 60ch; }
+
+  /* ---------- Education ---------- */
+  .edu-item { display: flex; justify-content: space-between; gap: 16px; padding: 14px 0; border-top: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .edu-item:first-child { border-top: none; }
+  .edu-name { font-weight: 500; color: var(--ink); }
+  .edu-sub { color: var(--muted); font-size: .92rem; }
+  .edu-date { font-family: var(--mono); font-size: 12px; color: var(--muted-dim); white-space: nowrap; }
+
+  /* ---------- Certifications ---------- */
+  .cert-group { padding: 14px 0; border-top: 1px solid var(--line-soft); }
+  .cert-group:first-child { border-top: none; }
+  .cert-provider { font-family: var(--mono); font-size: 12px; color: var(--amber); margin-bottom: 8px; }
+  .cert-list { color: var(--muted); font-size: .95rem; }
+
+  /* ---------- Leadership ---------- */
+  .lead-item { padding: 14px 0; border-top: 1px solid var(--line-soft); }
+  .lead-item:first-child { border-top: none; }
+  .lead-title { font-weight: 500; color: var(--ink); margin-bottom: 3px; }
+  .lead-desc { color: var(--muted); font-size: .93rem; max-width: 64ch; }
+
+  /* ---------- Footer ---------- */
+  footer { padding: 60px 0 calc(60px + env(safe-area-inset-bottom, 0px)); text-align: center; }
+  footer .cta-line { font-family: var(--serif-display); font-weight: 600; font-size: 1.4rem; margin-bottom: 18px; max-width: 34ch; margin-left: auto; margin-right: auto; }
+  footer .contact-row { justify-content: center; margin-bottom: 26px; }
+  footer .footnote { font-family: var(--mono); font-size: 11.5px; color: var(--muted-dim); }
+</style>
+</head>
+<body>
+
+<div class="bp-bg" aria-hidden="true"></div>
+<div class="frame-corner tl" aria-hidden="true"></div>
+<div class="frame-corner tr" aria-hidden="true"></div>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand"><strong>MONIKA SINGH</strong> // portfolio</div>
+    <nav class="top-links">
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="eyebrow-tag">Open to internships &amp; entry-level roles</div>
+      <h1 class="name">Monika Singh</h1>
+      <p class="role">Full-Stack Developer &amp; UI/UX Designer</p>
+      <p class="lede">Final-year Computer Science &amp; Engineering student who builds the whole system — backend logic, data pipelines, and the interface someone actually touches. Based in Bhopal, India.</p>
+
+      <div class="contact-row">
+        <a class="pill" href="mailto:monika0006.mona@gmail.com">monika0006.mona@gmail.com</a>
+        <a class="pill" href="https://www.linkedin.com/in/monika-singh-933bb5298" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="pill" href="https://github.com/moni6804" target="_blank" rel="noopener">GitHub</a>
+        <span class="pill">Bhopal, Madhya Pradesh, India</span>
+      </div>
+
+      <div class="stat-strip">
+        <div class="stat"><div class="num">8</div><div class="lbl">PROJECTS SHIPPED</div></div>
+        <div class="stat"><div class="num">4</div><div class="lbl">INTERNSHIPS COMPLETED</div></div>
+        <div class="stat"><div class="num">2027</div><div class="lbl">EXPECTED GRADUATION</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap">
+      <div class="section-head"><span class="idx">01</span><h2 class="section-title">About</h2></div>
+      <p class="about-text">
+        I'm a final-year B.Tech Computer Science &amp; Engineering student at <strong>Sagar Group of Institutions (SISTec-R), Bhopal</strong>,
+        graduating in 2027. My work spans <strong>computer vision</strong> (vehicle tracking, real-time image effects),
+        <strong>full-stack web applications</strong> (e-commerce, coding-challenge platforms), and
+        <strong>UI/UX design in Figma</strong> — usually all three on the same project. I like taking something from a rough idea to a
+        working, testable system, and I'm currently looking for an internship or entry-level role where I can keep doing that.
+      </p>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="wrap">
+      <div class="section-head"><span class="idx">02</span><h2 class="section-title">Skills</h2></div>
+
+      <div class="skill-group">
+        <div class="grp-label">LANGUAGES</div>
+        <div class="tag-row">
+          <span class="tag">Python</span><span class="tag">C</span><span class="tag">C++</span>
+          <span class="tag">SQL</span><span class="tag">JavaScript</span><span class="tag">HTML</span><span class="tag">CSS</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="grp-label">FRAMEWORKS &amp; TOOLS</div>
+        <div class="tag-row">
+          <span class="tag">Django</span><span class="tag">Flask</span><span class="tag">Git</span><span class="tag">GitHub</span>
+          <span class="tag">OpenCV</span><span class="tag">PyTorch</span><span class="tag">YOLO11n</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="grp-label">DESIGN</div>
+        <div class="tag-row">
+          <span class="tag">Figma</span><span class="tag">Wireframing</span><span class="tag">Prototyping</span><span class="tag">UI/UX Design</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="grp-label">CORE CS</div>
+        <div class="tag-row">
+          <span class="tag">Data Structures</span><span class="tag">Computer Networking</span>
+          <span class="tag">Machine Learning</span><span class="tag">Cybersecurity Fundamentals</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="wrap">
+      <div class="section-head"><span class="idx">03</span><h2 class="section-title">Featured projects</h2></div>
+
+      <div class="project">
+        <div class="project-head">
+          <div class="project-title">Compress &amp; Compare — Smart Image Compression Tool</div>
+          <a class="project-link" href="https://github.com/Belphegorion/image-compression-website" target="_blank" rel="noopener">View on GitHub</a>
+        </div>
+        <div class="project-meta">Team of 5 · Mentor: Prof. Himanshu Yadav · May–Jun 2026</div>
+        <p class="project-desc">Full-stack web app implementing nine custom compression algorithms across lossless and lossy techniques, with SQLite-backed multi-user authentication and real-time PSNR-based quality evaluation.</p>
+        <div class="tag-row"><span class="tag">Python</span><span class="tag">SQLite</span><span class="tag">JavaScript</span><span class="tag">Figma</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <div class="project-title">Vehicle Tracking &amp; Counting System</div>
+          <a class="project-link" href="https://github.com/moni6804/Vehicle-Tracking" target="_blank" rel="noopener">View on GitHub</a>
+        </div>
+        <p class="project-desc">Computer vision pipeline that detects, tracks, and counts vehicles from traffic footage — YOLO11n for frame-by-frame detection, BoT-SORT for persistent ID tracking, and a virtual counting line for accurate, duplicate-free, per-class counts.</p>
+        <div class="tag-row"><span class="tag">Python</span><span class="tag">YOLO11n</span><span class="tag">OpenCV</span><span class="tag">BoT-SORT</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <div class="project-title">OmniCommerce</div>
+          <a class="project-link" href="https://github.com/moni6804/OmniCommerce-Key" target="_blank" rel="noopener">View on GitHub</a>
+        </div>
+        <p class="project-desc">Python-based e-commerce platform covering the full shopping flow — product browsing, search, cart management, order placement, and order tracking.</p>
+        <div class="tag-row"><span class="tag">Python</span><span class="tag">Django/Flask</span><span class="tag">SQLite/MySQL</span><span class="tag">JavaScript</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <div class="project-title">AI Interview Platform</div>
+          <a class="project-link" href="https://github.com/moni6804/AI-interview-platform" target="_blank" rel="noopener">View on GitHub</a>
+        </div>
+        <p class="project-desc">AI-powered interview preparation system that simulates real interview sessions, asks technical and HR questions, and gives personalized feedback to improve performance.</p>
+        <div class="tag-row"><span class="tag">Python</span><span class="tag">JavaScript</span><span class="tag">AI</span></div>
+      </div>
+
+      <div class="more-projects">
+        <div class="project">
+          <div class="project-head">
+            <div class="project-title">FlexCode</div>
+            <a class="project-link" href="https://github.com/Belphegorion/flex-code-main" target="_blank" rel="noopener">View on GitHub</a>
+          </div>
+          <p class="project-desc">Full-stack platform for attempting coding challenges, submitting solutions, and tracking rankings via leaderboards.</p>
+          <div class="tag-row"><span class="tag">Figma</span><span class="tag">Responsive Design</span></div>
+        </div>
+
+        <div class="project">
+          <div class="project-head">
+            <div class="project-title">Invisible Cloak</div>
+            <a class="project-link" href="https://github.com/moni6804/Invisible-Cloak" target="_blank" rel="noopener">View on GitHub</a>
+          </div>
+          <p class="project-desc">Real-time computer vision project that creates an invisibility effect by detecting a specific colored cloth and replacing it live via webcam.</p>
+          <div class="tag-row"><span class="tag">Python</span><span class="tag">OpenCV</span><span class="tag">NumPy</span></div>
+        </div>
+
+        <div class="project">
+          <div class="project-head">
+            <div class="project-title">Deep Q-Learning Game Agent</div>
+            <a class="project-link" href="https://github.com/moni6804/Snake-game" target="_blank" rel="noopener">View on GitHub</a>
+          </div>
+          <p class="project-desc">Custom Pygame environment paired with a Deep Q-Network trained on the Bellman equation, using epsilon-greedy exploration and experience replay for stable learning.</p>
+          <div class="tag-row"><span class="tag">Python</span><span class="tag">PyTorch</span><span class="tag">Pygame</span></div>
+        </div>
+
+        <div class="project">
+          <div class="project-head">
+            <div class="project-title">Ocean Gamification</div>
+          </div>
+          <p class="project-desc">Game-based platform educating users on marine conservation through missions and reward systems.</p>
+          <div class="tag-row"><span class="tag">C</span><span class="tag">C++</span><span class="tag">JavaScript</span><span class="tag">Figma</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="wrap">
+      <div class="section-head"><span class="idx">04</span><h2 class="section-title">Experience</h2></div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-date">Aug 2026 – Sep 2026</div>
+          <div class="tl-role">Machine Learning &amp; Applied AI Intern</div>
+          <div class="tl-org">IBM</div>
+          <p class="tl-desc">Developed and evaluated machine learning models for real-world tasks, improving model performance and practical skills.</p>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">Jul 2026 – Sep 2026</div>
+          <div class="tl-role">DSA with Python Intern</div>
+          <div class="tl-org">Rinex Technologies Pvt. Ltd. · Mangalore, India</div>
+          <p class="tl-desc">Completed targeted Data Structures and Algorithms problem sets in Python to improve coding speed and problem-solving accuracy.</p>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">Apr 2026 – May 2026</div>
+          <div class="tl-role">UI/UX Designer Intern</div>
+          <div class="tl-org">CodTech IT Solutions · Telangana, India</div>
+          <p class="tl-desc">Developed wireframes and interactive prototypes that improved interface clarity based on stakeholder feedback and usability goals.</p>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">Oct 2025 – Dec 2025</div>
+          <div class="tl-role">UI/UX Design Intern</div>
+          <div class="tl-org">Eulogik · Bhopal, India</div>
+          <p class="tl-desc">Created Figma wireframes and interactive prototypes that improved client feedback clarity; collaborated on responsive layouts and usability across screens.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="wrap">
+      <div class="section-head"><span class="idx">05</span><h2 class="section-title">Education</h2></div>
+      <div class="edu-item">
+        <div>
+          <div class="edu-name">B.Tech, Computer Science &amp; Engineering</div>
+          <div class="edu-sub">Sagar Group of Institutions (SISTec-R), Bhopal, India · CGPA 7.15 / 10</div>
+        </div>
+        <div class="edu-date">2023 – 2027</div>
+      </div>
+      <div class="edu-item">
+        <div>
+          <div class="edu-name">Class XII, CBSE</div>
+          <div class="edu-sub">The Iconic School, Bhopal · 67%</div>
+        </div>
+        <div class="edu-date">2022</div>
+      </div>
+      <div class="edu-item">
+        <div>
+          <div class="edu-name">Class X, CBSE</div>
+          <div class="edu-sub">Kopal Public School, Bhopal · 52%</div>
+        </div>
+        <div class="edu-date">2020</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="certifications">
+    <div class="wrap">
+      <div class="section-head"><span class="idx">06</span><h2 class="section-title">Certifications</h2></div>
+
+      <div class="cert-group">
+        <div class="cert-provider">CISCO NETWORKING ACADEMY</div>
+        <div class="cert-list">Networking Basics · Python Essentials 1 &amp; 2 · Introduction to Cybersecurity · CCNA 1, 2 &amp; 3 · Data Analytics Essentials</div>
+      </div>
+      <div class="cert-group">
+        <div class="cert-provider">IBM</div>
+        <div class="cert-list">Exploring Artificial Intelligence</div>
+      </div>
+      <div class="cert-group">
+        <div class="cert-provider">SIMPLILEARN</div>
+        <div class="cert-list">Introduction to Figma · Basics of UI/UX</div>
+      </div>
+      <div class="cert-group">
+        <div class="cert-provider">UNSTOP</div>
+        <div class="cert-list">Basic Coding in C</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="leadership">
+    <div class="wrap">
+      <div class="section-head"><span class="idx">07</span><h2 class="section-title">Leadership &amp; activities</h2></div>
+
+      <div class="lead-item">
+        <div class="lead-title">Branch Coordinator, CSE</div>
+        <p class="lead-desc">Acted as liaison between students, faculty, and event organizers for branch-level activities.</p>
+      </div>
+      <div class="lead-item">
+        <div class="lead-title">Member, Student Activity Council (SAC)</div>
+        <p class="lead-desc">Organized academic, cultural, and technical college events.</p>
+      </div>
+      <div class="lead-item">
+        <div class="lead-title">Industry exposure programs</div>
+        <p class="lead-desc">Industrial visit to CIS Indore (2025) · Delhi IoT Expo (2025) · NXT WAVE at IIT Delhi (2024).</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="contact">
+  <div class="wrap">
+    <p class="cta-line">Open to internships and entry-level roles in software development and UI/UX design.</p>
+    <div class="contact-row">
+      <a class="pill" href="mailto:monika0006.mona@gmail.com">monika0006.mona@gmail.com</a>
+      <a class="pill" href="https://www.linkedin.com/in/monika-singh-933bb5298" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="pill" href="https://github.com/moni6804" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <div class="footnote">MONIKA SINGH · BHOPAL, MADHYA PRADESH, INDIA</div>
+  </div>
+</footer>
+
+</body>
+</html>
